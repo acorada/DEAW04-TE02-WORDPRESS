@@ -18,7 +18,7 @@ services:
       MYSQL_PASSWORD: wordpress
       MYSQL_DATABASE: birt-wordpress
     volumes:
-      - db_data:/var/lib/mysql
+      - db_mysql:/var/lib/mysql
 
   phpmyadmin:
     image: phpmyadmin
@@ -45,8 +45,8 @@ services:
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_NAME: birt-wordpress
     volumes:
-      - proyecto:/var/www/html
+      - wordpress:/var/www/html
 
 volumes: 
-  proyecto:
-  db_data:
+  wordpress:
+  db_mysql:
