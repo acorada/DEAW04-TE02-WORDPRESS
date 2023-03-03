@@ -1,0 +1,52 @@
+# Versión utilizada
+# La versión 3 es la más utilizada y la que se recomienda
+version: '3'
+
+# Configuración de los servidores que vamos a necesitar
+services: 
+ 
+  # mysql es el nombre que vamos a dar a este primer servidor
+  # Será el nombre que tendremos que usar cuando nos refiramos a él
+  mysql:
+    image: mysql:5.7
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: birt-wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_DATABASE: birt-wordpress
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+
+  wordpress:
+    image: wordpress
+    ports:
+      - 80:80
+    depends_on:
+      - mysql
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: mysql:3306
+      WORDPRESS_DB_USER: birt-wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: birt-wordpress
+    volumes:
+      - proyecto:/var/www/html
+
+volumes: 
+  proyecto:
+  db_data:
